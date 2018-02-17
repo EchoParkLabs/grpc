@@ -18,6 +18,7 @@ import time
 import math
 
 import grpc
+import os
 
 import route_guide_pb2
 import route_guide_pb2_grpc
@@ -116,9 +117,9 @@ def serve():
     route_guide_pb2_grpc.add_RouteGuideServicer_to_server(
         RouteGuideServicer(), server)
     #server.add_insecure_port('[::]:50051')
-    with open('server.key') as f:
+    with open(os.environ('GRPC_KEY') as f:
         private_key = f.read()
-    with open('server.crt') as f:
+    with open(os.environ('GRPC_CHAIN') as f:
         certificate_chain = f.read()
 
     server_credentials = grpc.ssl_server_credentials(
