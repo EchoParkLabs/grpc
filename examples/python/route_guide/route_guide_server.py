@@ -115,7 +115,17 @@ def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     route_guide_pb2_grpc.add_RouteGuideServicer_to_server(
         RouteGuideServicer(), server)
-    server.add_insecure_port('[::]:50051')
+    #server.add_insecure_port('[::]:50051')
+    with open('server.key') as f:
+        private_key = f.read()
+    with open('server.crt') as f:
+        certificate_chain = f.read()
+
+    server_credentials = grpc.ssl_server_credentials(
+      ((private_key, certificate_chain,),))
+
+    server.add_secure_port('[::]:50051', server_credentials)
+    
     server.start()
     try:
         while True:
