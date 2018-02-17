@@ -117,9 +117,9 @@ def serve():
     route_guide_pb2_grpc.add_RouteGuideServicer_to_server(
         RouteGuideServicer(), server)
     #server.add_insecure_port('[::]:50051')
-    with open(os.environ('GRPC_KEY')) as f:
+    with open(os.getenv('GRPC_KEY')) as f:
         private_key = f.read()
-    with open(os.environ('GRPC_CHAIN')) as f:
+    with open(os.getenv('GRPC_CHAIN')) as f:
         certificate_chain = f.read()
 
     server_credentials = grpc.ssl_server_credentials(
