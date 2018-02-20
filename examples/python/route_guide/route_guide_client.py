@@ -23,6 +23,9 @@ import route_guide_pb2
 import route_guide_pb2_grpc
 import route_guide_resources
 
+import os
+
+SERVICE_ADDRESS = os.getenv('SERVICE_ADDRESS', 'localhost:50051')
 
 def make_route_note(message, latitude, longitude):
     return route_guide_pb2.RouteNote(
@@ -101,7 +104,7 @@ def guide_route_chat(stub):
 
 def run():
     channel_credentials = grpc.ssl_channel_credentials()
-    channel = grpc.secure_channel('localhost:50051', credentials=channel_credentials)
+    channel = grpc.secure_channel(SERVICE_ADDRESS, credentials=channel_credentials)
     # channel = grpc.insecure_channel('localhost:50051')
     stub = route_guide_pb2_grpc.RouteGuideStub(channel)
     print("-------------- GetFeature --------------")
